@@ -58,17 +58,26 @@
   <ItemGroup>
     <Compile Include="Assets\Framework\Design Patterns\ObserverPattern.cs" />
     <Compile Include="Assets\Framework\Design Patterns\State Pattern\State.cs" />
-    <Compile Include="Assets\Framework\Template\TileData.cs" />
+    <Compile Include="Assets\Framework\Template\Grid\TileData.cs" />
     <Compile Include="Assets\Framework\Design Patterns\Singleton\Singleton.cs" />
-    <Compile Include="Assets\Framework\Template\GridManager.cs" />
+    <Compile Include="Assets\Framework\Template\Grid\GridManager.cs" />
     <Compile Include="Assets\Dialogue System\Dialogue.cs" />
     <Compile Include="Assets\Dialogue System\DialogueTrigger.cs" />
-    <Compile Include="Assets\Framework\Template\Tile.cs" />
+    <Compile Include="Assets\Framework\Template\Grid\Tile.cs" />
     <Compile Include="Assets\Dialogue System\DialogueManager.cs" />
     <Compile Include="Assets\Framework\Design Patterns\Factory.cs" />
     <Compile Include="Assets\Framework\Design Patterns\PoolPattern.cs" />
     <Compile Include="Assets\Framework\Design Patterns\Singleton\SingletonPersistent.cs" />
     <Compile Include="Assets\Framework\Design Patterns\State Pattern\StatesMachine.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\AStarData.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\Directions.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\TokenGenerator.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\WallGenerator.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\AStarCalculator.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\TileUIManager.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\Tile.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\TileData.cs" />
+    <Compile Include="Assets\Framework\Template\A-Star\GridManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
