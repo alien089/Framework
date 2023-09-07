@@ -66,6 +66,9 @@
     <Compile Include="Assets\Framework\Design Patterns\PoolPattern.cs" />
     <Compile Include="Assets\Framework\Design Patterns\Singleton\SingletonPersistent.cs" />
     <Compile Include="Assets\Framework\Design Patterns\State Pattern\StatesMachine.cs" />
+    <Compile Include="Assets\Framework\Template\Tile.cs" />
+    <Compile Include="Assets\Framework\Template\GridManager.cs" />
+    <Compile Include="Assets\Framework\Template\TileData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
