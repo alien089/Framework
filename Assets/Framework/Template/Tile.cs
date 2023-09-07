@@ -1,34 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
-
-public class Tile : MonoBehaviour, IPointerClickHandler
+namespace Framework.Template.GridTemplate
 {
-    public TileData data;
-    public Material open;
-    public Material closed;
-    public Material normal;
+    using UnityEngine;
+    using UnityEngine.EventSystems;
 
-    private void Awake()
+    public class Tile : MonoBehaviour, IPointerClickHandler
     {
-        closed = Resources.Load<Material>("Materials/Closed");
-        open = Resources.Load<Material>("Materials/Open");
-        normal = Resources.Load<Material>("Materials/Tiles");
-    }
+        public TileData Data;
 
-    public void Initialize(GridManager gridM, int rowInit, int columnInit, bool walkable, Tile tile)
-    {
-        data = new TileData(gridM, rowInit, columnInit, walkable, tile);
-    }
+        public void Initialize(GridManager gridManager, int rowInit, int columnInit, bool walkable, Tile tile)
+        {
+            Data = new TileData(gridManager, rowInit, columnInit, walkable, tile);
+        }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log(gameObject.name);
-    }
-
-    public void ChangeMaterial(Material material)
-    {
-        GetComponent<Renderer>().material = material;
+        public void OnPointerClick(PointerEventData eventData)
+        {
+           
+        }
     }
 }

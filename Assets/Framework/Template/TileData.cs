@@ -1,32 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-[System.Serializable]
-public class TileData
+namespace Framework.Template.GridTemplate
 {
-    public int row;
-    public int column;
-    public GridManager gm;
-    public bool walkable;
-    public Tile tile;
+    using UnityEngine;
 
-    public TileData(GridManager gridManager, int newRow, int newColumn, bool walkable, Tile tile)
+    [System.Serializable]
+    public class TileData
     {
-        row = newRow;
-        column = newColumn;
-        gm = gridManager;
-        this.walkable = walkable;
-        this.tile = tile;
+        public int Row;
+        public int Column;
+        public GridManager GridManager;
+        public bool Walkable;
+        public Tile Tile;
+
+        public TileData(GridManager gridManager, int newRow, int newColumn, bool walkable, Tile tile)
+        {
+            Row = newRow;
+            Column = newColumn;
+            GridManager = gridManager;
+            Walkable = walkable;
+            Tile = tile;
+        }
+
+        public Vector2Int ToVector()
+        {
+            return new Vector2Int(Row, Column);
+        }
+
     }
 
-    public Vector2Int ToVector()
-    {
-        return new Vector2Int(row, column);
-    }
-
-    public void ChangeMaterial(Material material)
-    {
-        tile.ChangeMaterial(material);
-    }
 }
