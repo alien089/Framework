@@ -112,9 +112,5 @@ namespace Framework.Template.AStarTemplate
         }
         #endregion
 
-        public bool CheckIfTileIsWalkable(Vector2Int positionGrid)
-        {
-            return mapTiles[positionGrid].walkable;
-        }
     }
 }

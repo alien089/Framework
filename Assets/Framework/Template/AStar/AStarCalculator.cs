@@ -33,6 +33,7 @@ namespace Framework.Template.AStarTemplate
             TryGetComponent(out m_TokenGenerator);
         }
 
+
         /// <summary>
         /// 
         /// </summary>
@@ -52,9 +53,6 @@ namespace Framework.Template.AStarTemplate
                     float g = actualData.aStarData.g + Vector2.Distance(m_GridManager.GetWorld2DPosition(actualData.ToVector()), m_GridManager.GetWorld2DPosition(neighbourCell));
                     float h = Vector2.Distance(m_GridManager.GetWorld2DPosition(neighbourCell), m_GridManager.GetWorld2DPosition(m_EndCoordinates));
                     float f = g + h;
-
-                    //setup TextMeshPro
-                    m_GridManager.MapTiles[neighbourCell].tile.UiManager.SetFGHValues(f, g, h);
 
                     //WIP
                     if (!UpdateTileData(m_GridManager.MapTiles[neighbourCell], g, h, f, actualData))
