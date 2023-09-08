@@ -32,6 +32,9 @@ namespace Framework.Template.AStarTemplate
         }
 
         #region GenerationGrid
+        /// <summary>
+        /// Generate the grid and instantiates the tile prefabs
+        /// </summary>
         private void GenerateGrid()
         {
             for (int row = 0; row < maxRow; row++)
@@ -50,11 +53,22 @@ namespace Framework.Template.AStarTemplate
         }
 
         #region GetWorld2DPosition
+        /// <summary>
+        /// Get the world position in 2D with vector
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public Vector2 GetWorld2DPosition(Vector2Int position)
         {
             return new Vector2(position.x * (gridData.cellSize.x + gridData.cellGap.x), position.y * (gridData.cellSize.z + gridData.cellGap.z));
         }
 
+        /// <summary>
+        /// Get the world position in 2D with x and y positions
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public Vector2 GetWorld2DPosition(int x, int y)
         {
             return new Vector2(x * (gridData.cellSize.x + gridData.cellGap.x), y * (gridData.cellSize.z + gridData.cellGap.z));
@@ -62,27 +76,51 @@ namespace Framework.Template.AStarTemplate
         #endregion
 
         #region GetWorld3DPosition
+        /// <summary>
+        /// Get the world position in 3D with vector
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public Vector3 GetWorld3DPosition(Vector2Int position)
         {
             return new Vector3(position.x * (gridData.cellSize.x + gridData.cellGap.x), 0, position.y * (gridData.cellSize.z + gridData.cellGap.z));
         }
 
+        /// <summary>
+        /// Get the world position in 3D with x and y positions
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public Vector3 GetWorld3DPosition(int x, int y)
         {
             return new Vector3(x * (gridData.cellSize.x + gridData.cellGap.x), 0, y * (gridData.cellSize.z + gridData.cellGap.z));
         }
         #endregion
 
+        /// <summary>
+        /// Check if the coordinate is within the grid (false) or in the border of it (true)
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <returns></returns>
         public bool CheckGridBounds(Vector2Int coordinates)
         {
             return (coordinates.x < 0 || coordinates.x >= maxRow || coordinates.y < 0 || coordinates.y >= maxColumn);
         }
 
+        /// <summary>
+        /// Check if the tile is walkable or not
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <returns></returns>
         public bool CheckWalkable(Vector2Int coordinates)
         {
             return mapTiles[coordinates].walkable;
         }
 
+        /// <summary>
+        /// Center the camera
+        /// </summary>
         private void CenterCamera()
         {
             Vector3 startGrid = GetWorld3DPosition(0, 0);
@@ -91,6 +129,10 @@ namespace Framework.Template.AStarTemplate
             Camera.main.transform.position = new Vector3((startGrid.x + endGrid.x) / 2, HeightCamera(), (startGrid.z + endGrid.z) / 2);
         }
 
+        /// <summary>
+        /// Set the camera at the right height
+        /// </summary>
+        /// <returns></returns>
         private float HeightCamera()
         {
             return maxColumn * (gridData.cellGap.z + gridData.cellSize.z) + (gridData.cellGap.y + gridData.cellSize.y) + 1;
@@ -98,6 +140,10 @@ namespace Framework.Template.AStarTemplate
         #endregion
 
         #region GenerateRandomRowAndColumn
+        /// <summary>
+        /// Returns a random position within the grid (in Vector2)
+        /// </summary>
+        /// <param name="position"></param>
         public void GenerateRowAndColumnRandom(out Vector2Int position)
         {
             int randomRow = Random.Range(0, maxRow);
@@ -105,6 +151,11 @@ namespace Framework.Template.AStarTemplate
             position = new Vector2Int(randomRow, randomColumn);
         }
 
+        /// <summary>
+        /// Returns a random position within the grid (splitted in rows and columns)
+        /// </summary>
+        /// <param name="randomRow"></param>
+        /// <param name="randomColumn"></param>
         public void GenerateRowAndColumnRandom(out int randomRow, out int randomColumn)
         {
             randomRow = Random.Range(0, maxRow);

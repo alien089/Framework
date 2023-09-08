@@ -29,10 +29,10 @@ namespace Framework.Template.GridTemplate
             GenerateGrid();
         }
 
+        #region GenerationGrid
         /// <summary>
         /// Generate the grid and instantiates the tile prefabs
         /// </summary>
-        #region GenerationGrid
         private void GenerateGrid()
         {
             for (int row = 0; row < m_MaxRow; row++)

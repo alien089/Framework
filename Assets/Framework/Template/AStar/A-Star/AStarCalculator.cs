@@ -7,57 +7,61 @@ namespace Framework.Template.AStarTemplate
 
     [RequireComponent(typeof(TokenGenerator))]
     [RequireComponent(typeof(LineRenderer))]
+    [RequireComponent(typeof(GridManager))]
     public class AStarCalculator : MonoBehaviour
     {
-        private Directions m_Direction = new Directions();
+        private Directions m_Directions = new Directions();
+
+        [Header("Lists")]
         private List<TileData> m_OpenList = new List<TileData>();
         private List<TileData> m_ClosedList = new List<TileData>();
-        private LineRenderer m_LineRenderer;
         private List<Vector3> m_PathPositions = new List<Vector3>();
+
+        [Header("KeyCodes")]
         [SerializeField] private KeyCode m_StartPathCalculationKeycode;
         [SerializeField] private KeyCode m_StartMovePlayerKeycode;
         [SerializeField] private KeyCode m_StartPrefabPositionKeycode;
-        private GridManager m_GridManager;
+
+        [Header("Vector2Int")]
         [SerializeField] private Vector2Int m_StartCoordinates;
         [SerializeField] private Vector2Int m_EndCoordinates;
         [SerializeField] private Vector2Int m_LastCoordinates;
+
+        private GridManager m_GridManager;
         private TokenGenerator m_TokenGenerator;
 
-        // Start is called before the first frame update
         void Start()
         {
-            m_LineRenderer = GetComponent<LineRenderer>();
             TryGetComponent(out m_GridManager);
             TryGetComponent(out m_TokenGenerator);
         }
 
-
         /// <summary>
-        /// 
+        /// Calculate the path and traces with line renderer at the end
         /// </summary>
         /// <param name="actualData"></param>
         private void SearchNextStepWhile(TileData actualData)
         {
             while (actualData.ToVector() != m_EndCoordinates)
             {
-                foreach (Vector2Int direction in m_Direction.directions)
+                foreach (Vector2Int direction in m_Directions.directions)
                 {
                     Vector2Int neighbourCell = new Vector2Int(actualData.row + direction.x, actualData.column + direction.y);
-                    if (IsClosed(m_GridManager.MapTiles[neighbourCell])) continue;
-                    if (m_GridManager.CheckGridBounds(neighbourCell)) continue;
-                    if (!m_GridManager.CheckWalkable(neighbourCell)) continue;
+                    if (IsClosed(m_GridManager.MapTiles[neighbourCell])) 
+                        continue;
+                    if (m_GridManager.CheckGridBounds(neighbourCell)) 
+                        continue;
+                    if (!m_GridManager.CheckWalkable(neighbourCell)) 
+                        continue;
 
                     float g = actualData.aStarData.g + Vector2.Distance(m_GridManager.GetWorld2DPosition(actualData.ToVector()), m_GridManager.GetWorld2DPosition(neighbourCell));
                     float h = Vector2.Distance(m_GridManager.GetWorld2DPosition(neighbourCell), m_GridManager.GetWorld2DPosition(m_EndCoordinates));
                     float f = g + h;
 
-                    //WIP
                     if (!UpdateTileData(m_GridManager.MapTiles[neighbourCell], g, h, f, actualData))
                     {
                         AddToOpenList(neighbourCell);
-                        //openList.Add(mapTiles[neighbourCell]);
                         m_GridManager.MapTiles[neighbourCell].aStarData.SetupAStarData(g, h, f, actualData);
-                        //mapTiles[neighbourCell].ChangeMaterial(mapTiles[neighbourCell].tile.open);
                     }
                 }
 
@@ -78,49 +82,7 @@ namespace Framework.Template.AStarTemplate
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="actualData"></param>
-        private void SearchNextStep(TileData actualData)
-        {
-            if (actualData.ToVector() == m_EndCoordinates)
-            {
-                TracePath();
-                return;
-            }
-
-            foreach (Vector2Int direction in m_Direction.directions)
-            {
-                Vector2Int neighbourCell = new Vector2Int(actualData.row + direction.x, actualData.column + direction.y);
-                if (IsClosed(m_GridManager.MapTiles[neighbourCell])) continue;
-                if (m_GridManager.CheckGridBounds(neighbourCell)) continue;
-                if (!m_GridManager.CheckWalkable(neighbourCell)) continue;
-
-                float g = actualData.aStarData.g + Vector2.Distance(m_GridManager.GetWorld2DPosition(actualData.ToVector()), m_GridManager.GetWorld2DPosition(neighbourCell));
-                float h = Vector2.Distance(m_GridManager.GetWorld2DPosition(neighbourCell), m_GridManager.GetWorld2DPosition(m_EndCoordinates));
-                float f = g + h;
-
-                //WIP
-                if (!UpdateTileData(m_GridManager.MapTiles[neighbourCell], g, h, f, actualData))
-                {
-                    AddToOpenList(neighbourCell);
-                    //openList.Add(mapTiles[neighbourCell]);
-                    m_GridManager.MapTiles[neighbourCell].aStarData.SetupAStarData(g, h, f, actualData);
-                    //mapTiles[neighbourCell].ChangeMaterial(mapTiles[neighbourCell].tile.open);
-                }
-            }
-
-            m_OpenList = m_OpenList.OrderBy(tileData => tileData.aStarData.f).ThenBy(tileData => tileData.aStarData.h).ToList();
-            TileData firstData = m_OpenList.ElementAt(0);
-            //closedList.Add(firstData);
-            AddToClosedList(firstData.ToVector());
-            m_OpenList.RemoveAt(0);
-            //firstData.ChangeMaterial(firstData.tile.closed);
-            m_LastCoordinates = firstData.ToVector();
-        }
-
-        /// <summary>
-        /// 
+        /// Updates tile's informations
         /// </summary>
         /// <param name="data"></param>
         /// <param name="g"></param>
@@ -144,18 +106,13 @@ namespace Framework.Template.AStarTemplate
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
         private bool IsClosed(TileData data)
         {
             return m_ClosedList.Contains(data);
         }
 
         /// <summary>
-        /// 
+        /// Adds to open list and changes material
         /// </summary>
         /// <param name="coordinates"></param>
         private void AddToOpenList(Vector2Int coordinates)
@@ -164,7 +121,7 @@ namespace Framework.Template.AStarTemplate
         }
 
         /// <summary>
-        /// 
+        /// Adds to closed list and changes material
         /// </summary>
         /// <param name="coordinates"></param>
         private void AddToClosedList(Vector2Int coordinates)
@@ -173,7 +130,7 @@ namespace Framework.Template.AStarTemplate
         }
 
         /// <summary>
-        /// 
+        /// Reset of tiles to normal
         /// </summary>
         /// <param name="coordinates"></param>
         public void ReturnToNormalTiles(Vector2Int coordinates)
@@ -190,35 +147,23 @@ namespace Framework.Template.AStarTemplate
         }
 
         /// <summary>
-        /// 
+        /// Line renderer of the path
         /// </summary>
         private void TracePath()
         {
             m_PathPositions.Clear();
             var actualPosition = m_EndCoordinates;
-            m_LineRenderer.positionCount = 0;
             while (actualPosition != m_StartCoordinates)
             {
                 m_PathPositions.Add(m_GridManager.GetWorld3DPosition(m_GridManager.MapTiles[actualPosition].ToVector()));
-                AddVertexToPath(actualPosition);
                 actualPosition = m_GridManager.MapTiles[actualPosition].aStarData.parent.ToVector();
             }
             m_PathPositions.Reverse();
-            m_LineRenderer.enabled = true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="actualPosition"></param>
-        private void AddVertexToPath(Vector2Int actualPosition)
-        {
-            m_LineRenderer.positionCount++;
-            m_LineRenderer.SetPosition(m_LineRenderer.positionCount - 1, m_GridManager.GetWorld3DPosition(actualPosition) + Vector3.up);
-        }
 
         /// <summary>
-        /// 
+        /// Interpolate player's position to end token position 
         /// </summary>
         /// <returns></returns>
         private IEnumerator MovePlayer()
@@ -234,37 +179,29 @@ namespace Framework.Template.AStarTemplate
             Debug.Log("Reached end");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <returns></returns>
         private Vector3 GetDirection(Vector3 from, Vector3 to)
         {
             return to - from;
         }
 
         /// <summary>
-        /// 
+        /// Finds random position of start and end and spawns token 
         /// </summary>
-        private void SetStartEndPosition(Vector2Int startPosition, Vector2Int endPosition)
+        private void SetStartEndPosition()
         {
-            //FindRandomPosition(ref m_StartCoordinates);
-            m_StartCoordinates = startPosition;
+            FindRandomPosition(ref m_StartCoordinates);
             m_TokenGenerator.SpawnToken(m_TokenGenerator.StartPrefab, m_StartCoordinates);
             SetupStartCoordinates();
             do
             {
-                //FindRandomPosition(ref m_EndCoordinates);
-                m_EndCoordinates = endPosition;
+                FindRandomPosition(ref m_EndCoordinates);
             } while (m_EndCoordinates == m_StartCoordinates);
 
             m_TokenGenerator.SpawnToken(m_TokenGenerator.EndPrefab, m_EndCoordinates);
         }
 
         /// <summary>
-        /// 
+        /// Setups the start and last coordinates
         /// </summary>
         private void SetupStartCoordinates()
         {
@@ -273,10 +210,9 @@ namespace Framework.Template.AStarTemplate
         }
 
         /// <summary>
-        /// 
+        /// Finds random position to assign to a specific tile and for  
         /// </summary>
         /// <param name="tilePositionSelected"></param>
-        /// <param name="prefab"></param>
         private void FindRandomPosition(ref Vector2Int tilePositionSelected)
         {
             bool foundPosition = false;
@@ -299,3 +235,4 @@ namespace Framework.Template.AStarTemplate
         }
     }
 }
+
