@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Framework\Design Patterns\ObserverPattern.cs" />
     <Compile Include="Assets\Framework\Design Patterns\State Pattern\State.cs" />
+    <Compile Include="Assets\Framework\Template\AStar\Grid\Tile.cs" />
     <Compile Include="Assets\Framework\Template\Grid\TileData.cs" />
     <Compile Include="Assets\Framework\Design Patterns\Singleton\Singleton.cs" />
     <Compile Include="Assets\Framework\Template\Grid\GridManager.cs" />
@@ -68,16 +69,13 @@
     <Compile Include="Assets\Framework\Design Patterns\Factory.cs" />
     <Compile Include="Assets\Framework\Design Patterns\PoolPattern.cs" />
     <Compile Include="Assets\Framework\Design Patterns\Singleton\SingletonPersistent.cs" />
+    <Compile Include="Assets\Framework\Template\AStar\A-Star\Directions.cs" />
+    <Compile Include="Assets\Framework\Template\AStar\A-Star\AStarData.cs" />
+    <Compile Include="Assets\Framework\Template\AStar\A-Star\AStarCalculator.cs" />
+    <Compile Include="Assets\Framework\Template\AStar\Grid\GridManager.cs" />
+    <Compile Include="Assets\Framework\Template\AStar\Grid\TileData.cs" />
     <Compile Include="Assets\Framework\Design Patterns\State Pattern\StatesMachine.cs" />
-    <Compile Include="Assets\Framework\Template\AStar\AStarData.cs" />
-    <Compile Include="Assets\Framework\Template\AStar\Directions.cs" />
     <Compile Include="Assets\Framework\Template\AStar\TokenGenerator.cs" />
-    <Compile Include="Assets\Framework\Template\AStar\WallGenerator.cs" />
-    <Compile Include="Assets\Framework\Template\AStar\AStarCalculator.cs" />
-    <Compile Include="Assets\Framework\Template\AStar\TileUIManager.cs" />
-    <Compile Include="Assets\Framework\Template\AStar\Tile.cs" />
-    <Compile Include="Assets\Framework\Template\AStar\TileData.cs" />
-    <Compile Include="Assets\Framework\Template\AStar\GridManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

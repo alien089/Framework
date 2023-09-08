@@ -14,8 +14,6 @@ namespace Framework.Template.AStarTemplate
         private List<TileData> m_ClosedList = new List<TileData>();
         private LineRenderer m_LineRenderer;
         private List<Vector3> m_PathPositions = new List<Vector3>();
-        private bool m_PathSearching = false;
-        private bool m_PathSearched = false;
         [SerializeField] private KeyCode m_StartPathCalculationKeycode;
         [SerializeField] private KeyCode m_StartMovePlayerKeycode;
         [SerializeField] private KeyCode m_StartPrefabPositionKeycode;
@@ -40,7 +38,6 @@ namespace Framework.Template.AStarTemplate
         /// <param name="actualData"></param>
         private void SearchNextStepWhile(TileData actualData)
         {
-            m_PathSearching = true;
             while (actualData.ToVector() != m_EndCoordinates)
             {
                 foreach (Vector2Int direction in m_Direction.directions)
@@ -103,9 +100,6 @@ namespace Framework.Template.AStarTemplate
                 float h = Vector2.Distance(m_GridManager.GetWorld2DPosition(neighbourCell), m_GridManager.GetWorld2DPosition(m_EndCoordinates));
                 float f = g + h;
 
-                //setup TextMeshPro
-                m_GridManager.MapTiles[neighbourCell].tile.UiManager.SetFGHValues(f, g, h);
-
                 //WIP
                 if (!UpdateTileData(m_GridManager.MapTiles[neighbourCell], g, h, f, actualData))
                 {
@@ -167,7 +161,6 @@ namespace Framework.Template.AStarTemplate
         private void AddToOpenList(Vector2Int coordinates)
         {
             m_OpenList.Add(m_GridManager.MapTiles[coordinates]);
-            m_GridManager.MapTiles[coordinates].ChangeMaterial(m_GridManager.MapTiles[coordinates].tile.open);
         }
 
         /// <summary>
@@ -177,7 +170,6 @@ namespace Framework.Template.AStarTemplate
         private void AddToClosedList(Vector2Int coordinates)
         {
             m_ClosedList.Add(m_GridManager.MapTiles[coordinates]);
-            m_GridManager.MapTiles[coordinates].ChangeMaterial(m_GridManager.MapTiles[coordinates].tile.closed);
         }
 
         /// <summary>
@@ -189,13 +181,11 @@ namespace Framework.Template.AStarTemplate
             if (m_OpenList.Contains(m_GridManager.MapTiles[coordinates]))
             {
                 m_OpenList.Remove(m_GridManager.MapTiles[coordinates]);
-                m_GridManager.MapTiles[coordinates].tile.ChangeMaterial(m_GridManager.MapTiles[coordinates].tile.normal);
             }
 
             if (m_ClosedList.Contains(m_GridManager.MapTiles[coordinates]))
             {
                 m_ClosedList.Remove(m_GridManager.MapTiles[coordinates]);
-                m_GridManager.MapTiles[coordinates].tile.ChangeMaterial(m_GridManager.MapTiles[coordinates].tile.normal);
             }
         }
 
@@ -215,7 +205,6 @@ namespace Framework.Template.AStarTemplate
             }
             m_PathPositions.Reverse();
             m_LineRenderer.enabled = true;
-            m_PathSearched = true;
         }
 
         /// <summary>
@@ -259,14 +248,16 @@ namespace Framework.Template.AStarTemplate
         /// <summary>
         /// 
         /// </summary>
-        private void SetStartEndPosition()
+        private void SetStartEndPosition(Vector2Int startPosition, Vector2Int endPosition)
         {
-            FindRandomPosition(ref m_StartCoordinates, m_TokenGenerator.StartPrefab);
+            //FindRandomPosition(ref m_StartCoordinates);
+            m_StartCoordinates = startPosition;
             m_TokenGenerator.SpawnToken(m_TokenGenerator.StartPrefab, m_StartCoordinates);
             SetupStartCoordinates();
             do
             {
-                FindRandomPosition(ref m_EndCoordinates, m_TokenGenerator.EndPrefab);
+                //FindRandomPosition(ref m_EndCoordinates);
+                m_EndCoordinates = endPosition;
             } while (m_EndCoordinates == m_StartCoordinates);
 
             m_TokenGenerator.SpawnToken(m_TokenGenerator.EndPrefab, m_EndCoordinates);
@@ -286,7 +277,7 @@ namespace Framework.Template.AStarTemplate
         /// </summary>
         /// <param name="tilePositionSelected"></param>
         /// <param name="prefab"></param>
-        private void FindRandomPosition(ref Vector2Int tilePositionSelected, GameObject prefab)
+        private void FindRandomPosition(ref Vector2Int tilePositionSelected)
         {
             bool foundPosition = false;
             int numberOfTiles = m_GridManager.MaxColumn * m_GridManager.MaxRow;
@@ -299,7 +290,7 @@ namespace Framework.Template.AStarTemplate
                 numberOfTiles--;
                 if (coordinatesExamined.Contains(positionOnGrid)) continue;
                 coordinatesExamined.Add(positionOnGrid);
-                if (m_GridManager.CheckIfTileIsWalkable(positionOnGrid))
+                if (m_GridManager.CheckWalkable(positionOnGrid))
                 {
                     foundPosition = true;
                     tilePositionSelected = positionOnGrid;
