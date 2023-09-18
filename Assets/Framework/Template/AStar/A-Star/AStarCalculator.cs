@@ -8,7 +8,7 @@ namespace Framework.Template.AStarTemplate
     [RequireComponent(typeof(TokenGenerator))]
     [RequireComponent(typeof(LineRenderer))]
     [RequireComponent(typeof(GridManager))]
-    public class AStarCalculator : MonoBehaviour
+    public class AStarCalculator 
     {
         private Directions m_Directions = new Directions();
 
@@ -30,11 +30,11 @@ namespace Framework.Template.AStarTemplate
         private GridManager m_GridManager;
         private TokenGenerator m_TokenGenerator;
 
-        void Start()
-        {
-            TryGetComponent(out m_GridManager);
-            TryGetComponent(out m_TokenGenerator);
-        }
+        //void Start()
+        //{
+        //    TryGetComponent(out m_GridManager);
+        //    TryGetComponent(out m_TokenGenerator);
+        //}
 
         /// <summary>
         /// Calculate the path and traces with line renderer at the end
@@ -169,7 +169,8 @@ namespace Framework.Template.AStarTemplate
         private IEnumerator MovePlayer()
         {
             int index = 0;
-            GameObject player = m_TokenGenerator.Tokens[0];
+            GameObject player = new();
+            player.transform.position = m_TokenGenerator.Tokens[0];
             while (index < m_PathPositions.Count)
             {
                 player.transform.Translate(GetDirection(player.transform.position, m_PathPositions[index]).normalized / 10f);
@@ -190,14 +191,14 @@ namespace Framework.Template.AStarTemplate
         private void SetStartEndPosition()
         {
             FindRandomPosition(ref m_StartCoordinates);
-            m_TokenGenerator.SpawnToken(m_TokenGenerator.StartPrefab, m_StartCoordinates);
+            m_TokenGenerator.SpawnToken(m_StartCoordinates);
             SetupStartCoordinates();
             do
             {
                 FindRandomPosition(ref m_EndCoordinates);
             } while (m_EndCoordinates == m_StartCoordinates);
 
-            m_TokenGenerator.SpawnToken(m_TokenGenerator.EndPrefab, m_EndCoordinates);
+            m_TokenGenerator.SpawnToken(m_EndCoordinates);
         }
 
         /// <summary>

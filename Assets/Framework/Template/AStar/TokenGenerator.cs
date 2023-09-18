@@ -4,27 +4,26 @@ namespace Framework.Template.AStarTemplate
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class TokenGenerator : MonoBehaviour
+    public class TokenGenerator 
     {
         [SerializeField] private GameObject startPrefab;
         [SerializeField] private GameObject endPrefab;
         private GridManager gridManager;
-        private List<GameObject> tokens = new List<GameObject>();
+        private List<Vector2> tokens = new List<Vector2>();
 
-        public List<GameObject> Tokens { get => tokens; }
+        public List<Vector2> Tokens { get => tokens; }
         public GameObject StartPrefab { get => startPrefab; }
         public GameObject EndPrefab { get => endPrefab; }
 
 
-        private void Start()
-        {
-            TryGetComponent(out gridManager);
-        }
+        //private void Start()
+        //{
+        //    TryGetComponent(out gridManager);
+        //}
 
-        public void SpawnToken(GameObject prefab, Vector2Int coordinate)
+        public void SpawnToken(Vector2Int coordinate)
         {
-            var token = Instantiate(prefab, gridManager.GetWorld3DPosition(coordinate), Quaternion.identity);
-            tokens.Add(token);
+            tokens.Add(coordinate);
         }
 
         public void ClearTokens()
@@ -33,7 +32,6 @@ namespace Framework.Template.AStarTemplate
             {
                 var item = tokens[0];
                 tokens.RemoveAt(0);
-                Destroy(item);
             }
         }
     }
